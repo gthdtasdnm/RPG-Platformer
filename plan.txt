@@ -1,0 +1,11 @@
+ToDo:
+	Bogen Schießen
+	KillZone unter Map
+	StateMachine
+	Code Aufbessern
+	Items
+	WeltKarte
+	Inventar
+	Gegner
+	Leben
+	Attacken

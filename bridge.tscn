@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://d35hlo3ndok0d"]
+
+[ext_resource type="Texture2D" uid="uid://h348v4ioic6x" path="res://sprites/world_tileset.png" id="1_86rpg"]
+
+[sub_resource type="ConcavePolygonShape2D" id="ConcavePolygonShape2D_a3f6l"]
+
+[node name="Bridge" type="StaticBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_86rpg")
+region_enabled = true
+region_rect = Rect2(144, 0, 48, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -3.5)
+shape = SubResource("ConcavePolygonShape2D_a3f6l")
+one_way_collision = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+build_mode = 1
+polygon = PackedVector2Array(-24, -8, -18, -8, -14, -7, -10, -7, -6, -6, 6, -6, 10, -7, 14, -7, 18, -8, 24, -8, 24, -1, 14, 0, -14, 0, -24, -1)
+one_way_collision = true
