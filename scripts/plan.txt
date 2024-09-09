@@ -1,8 +1,6 @@
 ToDo:
 	Bogen Schießen
-	KillZone unter Map
 	StateMachine
-	Code Aufbessern
 	Items
 	WeltKarte
 	Inventar

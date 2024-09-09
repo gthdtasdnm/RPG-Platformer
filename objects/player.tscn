@@ -1,7 +1,7 @@
-[gd_scene load_steps=17 format=3 uid="uid://tiwwmcormp01"]
+[gd_scene load_steps=17 format=3 uid="uid://co28q110u3a2q"]
 
-[ext_resource type="Script" path="res://player.gd" id="1_e288f"]
 [ext_resource type="Texture2D" uid="uid://dswugsfpclp6v" path="res://sprites/knight.png" id="1_og6k1"]
+[ext_resource type="Script" path="res://scripts/player_alt.gd" id="1_qh26r"]
 [ext_resource type="Texture2D" uid="uid://b3k1ikbkbpppd" path="res://sprites/slash/SFX304_01.png" id="3_mjnjq"]
 [ext_resource type="Texture2D" uid="uid://cighclh4de3at" path="res://sprites/slash/SFX304_02.png" id="4_yr67v"]
 [ext_resource type="Texture2D" uid="uid://b1frtmdn8gytt" path="res://sprites/slash/SFX304_03.png" id="5_gx4w7"]
@@ -368,7 +368,7 @@ animations = [{
 }]
 
 [node name="Player" type="CharacterBody2D"]
-script = ExtResource("1_e288f")
+script = ExtResource("1_qh26r")
 
 [node name="SpritePlayer" type="Sprite2D" parent="."]
 unique_name_in_owner = true
@@ -396,3 +396,8 @@ sprite_frames = SubResource("SpriteFrames_3mh8k")
 frame = 1
 frame_progress = 0.817377
 flip_h = true
+
+[node name="KillTimer" type="Timer" parent="."]
+wait_time = 3.0
+
+[connection signal="timeout" from="KillTimer" to="." method="_on_kill_timer_timeout"]

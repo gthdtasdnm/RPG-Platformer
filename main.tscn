@@ -1,18 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://cqord80vm05qd"]
+[gd_scene load_steps=5 format=3 uid="uid://cqord80vm05qd"]
 
-[ext_resource type="PackedScene" uid="uid://tiwwmcormp01" path="res://player.tscn" id="1_ikubk"]
-[ext_resource type="PackedScene" uid="uid://0eqasmllnr3j" path="res://tile_map.tscn" id="2_uxyom"]
-[ext_resource type="PackedScene" uid="uid://d35hlo3ndok0d" path="res://bridge.tscn" id="3_tr1jd"]
+[ext_resource type="PackedScene" uid="uid://co28q110u3a2q" path="res://objects/player.tscn" id="1_c2o1a"]
+[ext_resource type="PackedScene" uid="uid://bjcsbonoyokjs" path="res://maps/Schatzi_Engelchen.tscn" id="2_bm7ol"]
+[ext_resource type="Script" path="res://scripts/player.gd" id="2_ie5cv"]
+[ext_resource type="PackedScene" uid="uid://cja5orme64qvn" path="res://Background/parallax_background.tscn" id="4_2uaan"]
 
 [node name="Main" type="Node2D"]
 
-[node name="Player" parent="." instance=ExtResource("1_ikubk")]
-position = Vector2(134, -43)
+[node name="Player" parent="." instance=ExtResource("1_c2o1a")]
+position = Vector2(166, -39)
+script = ExtResource("2_ie5cv")
 
-[node name="TileMap" parent="." instance=ExtResource("2_uxyom")]
+[node name="TileMap" parent="." instance=ExtResource("2_bm7ol")]
 
-[node name="Bridge" parent="." instance=ExtResource("3_tr1jd")]
-position = Vector2(731, 9)
-
-[node name="Bridge2" parent="." instance=ExtResource("3_tr1jd")]
-position = Vector2(827, 9)
+[node name="ParallaxBackground" parent="." instance=ExtResource("4_2uaan")]
