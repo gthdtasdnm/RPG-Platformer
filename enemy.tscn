@@ -1,10 +1,63 @@
-[gd_scene load_steps=9 format=3 uid="uid://k1n43aimc1j0"]
+[gd_scene load_steps=10 format=3 uid="uid://k1n43aimc1j0"]
 
 [ext_resource type="Script" path="res://enemy.gd" id="1_6qx35"]
 [ext_resource type="Texture2D" uid="uid://c1fnnu3f4lf7j" path="res://sprites/slime_green.png" id="1_boire"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oij4d"]
 size = Vector2(10, 13)
+
+[sub_resource type="Animation" id="Animation_kamtt"]
+resource_name = "Hit"
+length = 0.4
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("1_boire")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [4]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:vframes")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [3]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [10]
+}
 
 [sub_resource type="Animation" id="Animation_o2l6a"]
 resource_name = "Idle"
@@ -164,60 +217,6 @@ tracks/3/keys = {
 "values": [0, 1, 2, 3]
 }
 
-[sub_resource type="Animation" id="Animation_kamtt"]
-resource_name = "Hit"
-length = 0.4
-loop_mode = 1
-step = 0.2
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:texture")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [ExtResource("1_boire")]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:hframes")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [4]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Sprite2D:vframes")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [3]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Sprite2D:frame")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [9, 10]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_u54qw"]
 _data = {
 "Hit": SubResource("Animation_kamtt"),
@@ -225,6 +224,9 @@ _data = {
 "RESET": SubResource("Animation_p65br"),
 "Spawn": SubResource("Animation_rxa0n")
 }
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ohndh"]
+size = Vector2(8, 11)
 
 [node name="enemy" type="Node2D"]
 
@@ -251,8 +253,17 @@ libraries = {
 [node name="direction" type="Timer" parent="CharacterBody2D"]
 
 [node name="spawn" type="Timer" parent="CharacterBody2D"]
+wait_time = 0.8
+
+[node name="hitArea" type="Area2D" parent="CharacterBody2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D/hitArea"]
+position = Vector2(0, 5.5)
+shape = SubResource("RectangleShape2D_ohndh")
 
 [connection signal="animation_finished" from="CharacterBody2D/AnimationPlayer" to="CharacterBody2D" method="_on_animation_player_animation_finished"]
 [connection signal="timeout" from="CharacterBody2D/jump" to="CharacterBody2D" method="_on_jump_timeout"]
 [connection signal="timeout" from="CharacterBody2D/direction" to="CharacterBody2D" method="_on_direction_timeout"]
 [connection signal="timeout" from="CharacterBody2D/spawn" to="CharacterBody2D" method="_on_spawn_timeout"]
+[connection signal="area_entered" from="CharacterBody2D/hitArea" to="CharacterBody2D" method="_on_hit_area_area_entered"]
+[connection signal="body_entered" from="CharacterBody2D/hitArea" to="CharacterBody2D" method="_on_hit_area_body_entered"]

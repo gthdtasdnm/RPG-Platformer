@@ -10,6 +10,10 @@ var timer_startet = false
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var kill_timer: Timer = $KillTimer
+@onready var slash_timer: Timer = $Slash
+@onready var collisionsword: CollisionShape2D = $Area2D/Collisionsword
+
+
 
 func animation_handler():
 
@@ -22,18 +26,23 @@ func animation_handler():
 		anim.play("Jump")
 		
 	#SLASH ANIMATION
-	if Input.is_action_just_pressed("ClickLeft"):
+	if Input.is_action_just_pressed("ClickLeft") and slash_timer.time_left == 0 :
 		animated_sprite_2d.visible = true
 		animated_sprite_2d.play()
-
+		collisionsword.disabled = false
+		slash_timer.start()
+	
 	#DIRECTION
 	var direction := Input.get_axis("Left", "Right")
 	if direction>0:
 		sprite_player.flip_h = false
 		animated_sprite_2d.flip_h = true
+		collisionsword.position.x = 10
+		
 	elif direction<0:
 		sprite_player.flip_h = true
 		animated_sprite_2d.flip_h = false
+		collisionsword.position.x = -10
 
 func movement_handler(delta):
 	
@@ -84,3 +93,9 @@ func _physics_process(delta: float) -> void:
 
 func _on_kill_timer_timeout() -> void:
 	get_tree().reload_current_scene()
+	
+func _on_slash_timeout() -> void:
+	collisionsword.disabled = true
+	
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	print("hit")

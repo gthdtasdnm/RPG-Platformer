@@ -1,7 +1,7 @@
-[gd_scene load_steps=17 format=3 uid="uid://co28q110u3a2q"]
+[gd_scene load_steps=18 format=3 uid="uid://co28q110u3a2q"]
 
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_nhgqq"]
 [ext_resource type="Texture2D" uid="uid://dswugsfpclp6v" path="res://sprites/knight.png" id="1_og6k1"]
-[ext_resource type="Script" path="res://scripts/player_alt.gd" id="1_qh26r"]
 [ext_resource type="Texture2D" uid="uid://b3k1ikbkbpppd" path="res://sprites/slash/SFX304_01.png" id="3_mjnjq"]
 [ext_resource type="Texture2D" uid="uid://cighclh4de3at" path="res://sprites/slash/SFX304_02.png" id="4_yr67v"]
 [ext_resource type="Texture2D" uid="uid://b1frtmdn8gytt" path="res://sprites/slash/SFX304_03.png" id="5_gx4w7"]
@@ -367,8 +367,10 @@ animations = [{
 "speed": 10.0
 }]
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4kmsm"]
+
 [node name="Player" type="CharacterBody2D"]
-script = ExtResource("1_qh26r")
+script = ExtResource("1_nhgqq")
 
 [node name="SpritePlayer" type="Sprite2D" parent="."]
 unique_name_in_owner = true
@@ -400,4 +402,19 @@ flip_h = true
 [node name="KillTimer" type="Timer" parent="."]
 wait_time = 3.0
 
+[node name="Slash" type="Timer" parent="."]
+wait_time = 0.6
+one_shot = true
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="Collisionsword" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(10, 0)
+shape = SubResource("CapsuleShape2D_4kmsm")
+disabled = true
+
 [connection signal="timeout" from="KillTimer" to="." method="_on_kill_timer_timeout"]
+[connection signal="timeout" from="Slash" to="." method="_on_slash_timeout"]
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="draw" from="Area2D/Collisionsword" to="." method="_on_collisionsword_draw"]

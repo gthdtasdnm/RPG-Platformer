@@ -6,6 +6,8 @@ var set_jump_timer = true
 var set_direction_timer = true
 var direction = 0
 var SPEED = 50
+var hitted = false
+var hittable = true
 const JUMP_VELOCITY = -300
 var spawned = false
 @onready var anim = $AnimationPlayer
@@ -14,6 +16,9 @@ var spawned = false
 @onready var direction_timer: Timer = $direction
 @onready var sprite_enemy: Sprite2D = $Sprite2D
 @onready var spawn_timer: Timer = $spawn
+@onready var hit_area: Area2D = $hitArea
+
+
 
 func _ready() -> void:
 	anim.play("Spawn")
@@ -23,7 +28,7 @@ func _ready() -> void:
 func animation_handler():
 
 	#IDLE ANIMATION
-	if is_on_floor:
+	if is_on_floor and not anim.is_playing():
 		anim.play("Idle")
 
 	#DIRECTION
@@ -31,11 +36,17 @@ func animation_handler():
 		sprite_enemy.flip_h = false
 	elif direction<0:
 		sprite_enemy.flip_h = true
+		
+	if hitted:
+		anim.play("Hit")
 
 func movement_handler(delta):
 	
 	if not is_on_floor():
 		velocity += get_gravity() * delta
+		hitted = false
+	else:
+		hittable = true
 	
 	if set_jump_timer:
 		set_jump_timer = false
@@ -50,21 +61,26 @@ func movement_handler(delta):
 	
 	if is_on_wall():
 		direction = direction * (-1)
-	
 		
-	if direction>0:
-		velocity.x = direction * SPEED
-	elif direction<0:
-		velocity.x = direction * SPEED
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
+	if not hitted and hittable:
+		if direction>0:
+			velocity.x = direction * SPEED
+		elif direction<0:
+			velocity.x = direction * SPEED
+	
+	if hitted and hittable:
+		hittable = false
+		velocity = Vector2(100,-200)
+			
+			
 
 func death_handler():
 	pass
 	
 func _on_jump_timeout() -> void:
-	velocity.y = JUMP_VELOCITY
-	set_jump_timer = true
+	if is_on_floor():
+		velocity.y = JUMP_VELOCITY
+		set_jump_timer = true
 
 func _on_direction_timeout() -> void:
 	set_direction_timer = true
@@ -73,6 +89,7 @@ func _on_spawn_timeout() -> void:
 	spawned = true
 	
 func _physics_process(delta: float) -> void:
+	
 	if spawned:
 		death_handler()
 		
@@ -81,3 +98,8 @@ func _physics_process(delta: float) -> void:
 		movement_handler(delta)
 		
 		move_and_slide()
+
+
+
+func _on_hit_area_area_entered(area: Area2D) -> void:
+	hitted = true
