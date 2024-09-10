@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://cqord80vm05qd"]
+[gd_scene load_steps=6 format=3 uid="uid://cqord80vm05qd"]
 
 [ext_resource type="PackedScene" uid="uid://co28q110u3a2q" path="res://objects/player.tscn" id="1_c2o1a"]
 [ext_resource type="PackedScene" uid="uid://bjcsbonoyokjs" path="res://maps/Schatzi_Engelchen.tscn" id="2_bm7ol"]
 [ext_resource type="Script" path="res://scripts/player.gd" id="2_ie5cv"]
 [ext_resource type="PackedScene" uid="uid://cja5orme64qvn" path="res://Background/parallax_background.tscn" id="4_2uaan"]
+[ext_resource type="PackedScene" uid="uid://k1n43aimc1j0" path="res://enemy.tscn" id="5_vl52r"]
 
 [node name="Main" type="Node2D"]
 
@@ -14,3 +15,6 @@ script = ExtResource("2_ie5cv")
 [node name="TileMap" parent="." instance=ExtResource("2_bm7ol")]
 
 [node name="ParallaxBackground" parent="." instance=ExtResource("4_2uaan")]
+
+[node name="enemy" parent="." instance=ExtResource("5_vl52r")]
+position = Vector2(225, -10)
