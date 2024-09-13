@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://co28q110u3a2q" path="res://objects/player.tscn" id="1_c2o1a"]
 [ext_resource type="PackedScene" uid="uid://bjcsbonoyokjs" path="res://maps/Schatzi_Engelchen.tscn" id="2_bm7ol"]
 [ext_resource type="PackedScene" uid="uid://cja5orme64qvn" path="res://Background/parallax_background.tscn" id="4_2uaan"]
-[ext_resource type="PackedScene" uid="uid://k1n43aimc1j0" path="res://enemy.tscn" id="5_vl52r"]
+[ext_resource type="PackedScene" uid="uid://k1n43aimc1j0" path="res://enemy.tscn" id="4_g2tlg"]
 
 [node name="Main" type="Node2D"]
 
@@ -14,5 +14,5 @@ position = Vector2(166, -39)
 
 [node name="ParallaxBackground" parent="." instance=ExtResource("4_2uaan")]
 
-[node name="enemy" parent="." instance=ExtResource("5_vl52r")]
-position = Vector2(225, -10)
+[node name="CharacterBody2D" parent="." instance=ExtResource("4_g2tlg")]
+position = Vector2(200, -10)

@@ -5,45 +5,58 @@ var SPEED = 200
 const JUMP_VELOCITY = -300
 var second_jump = true
 var timer_startet = false
+var attack_damage = 10
+var knockback_force = 300.0
 @onready var anim = $AnimationPlayer
 @onready var sprite_player: Sprite2D = %SpritePlayer
-@onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var kill_timer: Timer = $KillTimer
 @onready var slash_timer: Timer = $Slash
 @onready var collisionsword: CollisionShape2D = $Area2D/Collisionsword
+@onready var spritesword: Sprite2D = $Spritesword
+@onready var anim_tree: AnimationTree = $AnimationTree
 
-
+func _ready() -> void:
+	anim_tree.active = true
+	
+func _process(delta: float) -> void:
+	animation_handler()
+	
+func update_anim_parameters():
+	if velocity.x == 0 and is_on_floor():
+		anim_tree["parameters/conditions/idle"] = true
+		anim_tree["parameters/conditions/isJumping"] = false
+		anim_tree["parameters/conditions/isMoving"] = false
+	elif velocity.y != 0:
+		anim_tree["parameters/conditions/idle"] = false
+		anim_tree["parameters/conditions/isJumping"] = true
+		anim_tree["parameters/conditions/isMoving"] = false
+	else:
+		anim_tree["parameters/conditions/idle"] = false
+		anim_tree["parameters/conditions/isJumping"] = false
+		anim_tree["parameters/conditions/isMoving"] = true
+	
+	if Input.is_action_just_pressed("ClickLeft") :
+		anim_tree["parameters/conditions/attack"] = true
+	else: 
+		anim_tree["parameters/conditions/attack"] = false
 
 func animation_handler():
-
-	#IDLE ANIMATION
-	if is_on_floor:
-		anim.play("Idle")
-
-	#JUMP ANIMATION
-	if Input.is_action_just_pressed("Up") and is_on_floor():
-		anim.play("Jump")
-		
-	#SLASH ANIMATION
-	if Input.is_action_just_pressed("ClickLeft") and slash_timer.time_left == 0 :
-		animated_sprite_2d.visible = true
-		animated_sprite_2d.play()
-		collisionsword.disabled = false
-		slash_timer.start()
+	
+	update_anim_parameters()
 	
 	#DIRECTION
 	var direction := Input.get_axis("Left", "Right")
 	if direction>0:
 		sprite_player.flip_h = false
-		animated_sprite_2d.flip_h = true
 		collisionsword.position.x = 10
-		
+		spritesword.flip_h = true
 	elif direction<0:
 		sprite_player.flip_h = true
-		animated_sprite_2d.flip_h = false
+		spritesword.flip_h = false
 		collisionsword.position.x = -10
-
+		
+	
 func movement_handler(delta):
 	
 	if is_on_floor():
@@ -80,22 +93,21 @@ func death_handler():
 		kill_timer.stop()
 		timer_startet = false
 	
-	
 func _physics_process(delta: float) -> void:
 	death_handler()
-	
-	animation_handler()
 	
 	movement_handler(delta)
 	
 	move_and_slide()
 
-
 func _on_kill_timer_timeout() -> void:
 	get_tree().reload_current_scene()
 	
-func _on_slash_timeout() -> void:
-	collisionsword.disabled = true
 	
 func _on_area_2d_body_entered(body: Node2D) -> void:
-	print("hit")
+	if body.has_method("damage"):
+		var attack = Attack.new()
+		attack.attack_damage = attack_damage
+		attack.knockback_force = knockback_force
+		attack.attack_position = global_position.x
+		body.damage(attack)

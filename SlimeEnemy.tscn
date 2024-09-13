@@ -1,7 +1,12 @@
-[gd_scene load_steps=9 format=3 uid="uid://k1n43aimc1j0"]
+[gd_scene load_steps=11 format=3 uid="uid://4qotruasbveo"]
 
-[ext_resource type="Script" path="res://scripts/enemy.gd" id="1_81txq"]
-[ext_resource type="Texture2D" uid="uid://c1fnnu3f4lf7j" path="res://sprites/slime_green.png" id="1_boire"]
+[ext_resource type="Script" path="res://scripts/enemy.gd" id="1_5qbsx"]
+[ext_resource type="Texture2D" uid="uid://c1fnnu3f4lf7j" path="res://sprites/slime_green.png" id="2_1224a"]
+[ext_resource type="Script" path="res://scripts/state_machine.gd" id="3_qamle"]
+[ext_resource type="Script" path="res://scripts/States/Enemy/enemy_idle.gd" id="4_myb20"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_44tc0"]
+size = Vector2(10, 13)
 
 [sub_resource type="Animation" id="Animation_kamtt"]
 resource_name = "Hit"
@@ -10,19 +15,19 @@ step = 0.2
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("SpriteSlime:texture")
+tracks/0/path = NodePath("Sprite2D:texture")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("1_boire")]
+"values": [ExtResource("2_1224a")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("SpriteSlime:hframes")
+tracks/1/path = NodePath("Sprite2D:hframes")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -34,7 +39,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("SpriteSlime:vframes")
+tracks/2/path = NodePath("Sprite2D:vframes")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -46,7 +51,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("SpriteSlime:frame")
+tracks/3/path = NodePath("Sprite2D:frame")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -64,19 +69,19 @@ step = 0.4
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("SpriteSlime:texture")
+tracks/0/path = NodePath("Sprite2D:texture")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("1_boire")]
+"values": [ExtResource("2_1224a")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("SpriteSlime:hframes")
+tracks/1/path = NodePath("Sprite2D:hframes")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -88,7 +93,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("SpriteSlime:vframes")
+tracks/2/path = NodePath("Sprite2D:vframes")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -100,7 +105,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("SpriteSlime:frame")
+tracks/3/path = NodePath("Sprite2D:frame")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -115,19 +120,19 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("SpriteSlime:texture")
+tracks/0/path = NodePath("Sprite2D:texture")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("1_boire")]
+"values": [ExtResource("2_1224a")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("SpriteSlime:hframes")
+tracks/1/path = NodePath("Sprite2D:hframes")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -139,7 +144,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("SpriteSlime:vframes")
+tracks/2/path = NodePath("Sprite2D:vframes")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -151,7 +156,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("SpriteSlime:frame")
+tracks/3/path = NodePath("Sprite2D:frame")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -168,19 +173,19 @@ step = 0.2
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("SpriteSlime:texture")
+tracks/0/path = NodePath("Sprite2D:texture")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("1_boire")]
+"values": [ExtResource("2_1224a")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("SpriteSlime:hframes")
+tracks/1/path = NodePath("Sprite2D:hframes")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -192,7 +197,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("SpriteSlime:vframes")
+tracks/2/path = NodePath("Sprite2D:vframes")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -204,7 +209,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("SpriteSlime:frame")
+tracks/3/path = NodePath("Sprite2D:frame")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -222,25 +227,39 @@ _data = {
 "Spawn": SubResource("Animation_rxa0n")
 }
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_oij4d"]
-size = Vector2(10, 13)
-
 [node name="CharacterBody2D" type="CharacterBody2D"]
-script = ExtResource("1_81txq")
+script = ExtResource("1_5qbsx")
 
-[node name="AnimationPlayer2" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_u54qw")
-}
-
-[node name="SpriteSlime" type="Sprite2D" parent="."]
-texture = ExtResource("1_boire")
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+texture = ExtResource("2_1224a")
 hframes = 4
 vframes = 3
 frame = 5
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
 position = Vector2(0, 5.5)
-shape = SubResource("RectangleShape2D_oij4d")
+shape = SubResource("RectangleShape2D_44tc0")
 
-[connection signal="animation_finished" from="AnimationPlayer2" to="." method="_on_animation_player_animation_finished"]
+[node name="AnimationPlayer2" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_u54qw")
+}
+
+[node name="jump2" type="Timer" parent="."]
+
+[node name="direction2" type="Timer" parent="."]
+
+[node name="spawn2" type="Timer" parent="."]
+wait_time = 0.8
+
+[node name="State Machine2" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("3_qamle")
+initial_state = NodePath("enemy_idle")
+
+[node name="enemy_idle" type="Node" parent="State Machine2"]
+script = ExtResource("4_myb20")
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+[connection signal="timeout" from="jump" to="." method="_on_jump_timeout"]
+[connection signal="timeout" from="direction" to="." method="_on_direction_timeout"]
+[connection signal="timeout" from="spawn" to="." method="_on_spawn_timeout"]
