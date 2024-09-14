@@ -1,9 +1,13 @@
 ToDo:
+	Enemy States ausbessern un abtrennen
 	Bogen Schießen
-	StateMachine
 	Items
 	WeltKarte
 	Inventar
 	Gegner
 	Leben
 	Attacken
+	Haustiere
+	lebensbalken
+	Gegner attacken
+	

@@ -14,5 +14,5 @@ position = Vector2(166, -39)
 
 [node name="ParallaxBackground" parent="." instance=ExtResource("4_2uaan")]
 
-[node name="CharacterBody2D" parent="." instance=ExtResource("4_g2tlg")]
-position = Vector2(200, -10)
+[node name="Slime" parent="." instance=ExtResource("4_g2tlg")]
+position = Vector2(417, -2)
