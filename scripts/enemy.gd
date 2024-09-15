@@ -16,9 +16,12 @@ var move_direction : float
 var wander_time : float
 var jump_time : float = 1
 var jump_velocity = -200
-var knockback_force : float
+var knockback_force : float = 0
 var attack_position : int
 var attack_force : float = 80
+
+var isHit = false
+var knockback_time : float = 0.1
 
 ##################################################
 #
@@ -36,19 +39,14 @@ func randomize_jump():
 func damage(attack : Attack):
 	knockback_force = attack.knockback_force
 	attack_position = sign( global_position.x - attack.attack_position)
-
+	isHit = true
+	
+func jump(delta):
+	if is_on_floor():
+		velocity.y = jump_velocity
+	
 func attack(move_direction, delta):
 	velocity.x = attack_force * move_direction
-	if not is_on_floor():
-		velocity += get_gravity() * delta
-	
-	if jump_time > 0.5:
-		jump_time = 0.5
-	elif jump_time > 0:
-		jump_time -= delta
-	elif jump_time <= 0:
-		velocity.y = jump_velocity
-		jump_time = 0.5
 	
 	
 	
@@ -57,9 +55,32 @@ func attack(move_direction, delta):
 # States
 #
 ##################################################
-
-
+func knockback_state(delta):
+	#KNOCKBACK
+	velocity.x = knockback_force * attack_position
+	if is_on_floor():
+		velocity.y = -knockback_force
+		isHit = false
+	else:
+		velocity += get_gravity() * delta
+	print(attack_position)
 	
+	if is_on_floor():
+		isHit = false
+		
+func chase_state(delta):
+	#GRAVITY
+	if not is_on_floor():
+		velocity += get_gravity() * delta
+	
+	#CHASE PLAYER
+	move_direction = sign(player.global_position.x - global_position.x)
+	velocity.x = 100 * move_direction
+	
+	#JUMP OVER OBSTACLE
+	if is_on_wall():
+		jump(delta)
+
 func wander_state(delta):
 	#GRAVITY
 	if not is_on_floor():
@@ -83,13 +104,7 @@ func wander_state(delta):
 		velocity.y = jump_velocity
 		randomize_jump()
 		
-	#KNOCKBACK
-	var knockback = 0.0
-	if knockback_force>0:
-		velocity.x = knockback_force * attack_position
-		velocity.y = -knockback_force
-		#knockback_force = lerp(knockback_force , 0.0, 0.5)
-		knockback_force = move_toward(knockback_force , 0.0, 50)
+	
 
 ##################################################
 #
@@ -98,9 +113,10 @@ func wander_state(delta):
 ##################################################
 
 func movement_handler(delta):
-	if player.global_position.distance_to(global_position) < 100:
-		move_direction = sign(player.global_position.x - global_position.x)
-		attack(move_direction, delta)
+	if isHit:
+		knockback_state(delta)	
+	elif player.global_position.distance_to(global_position) < 100:
+		chase_state(delta)
 	else:
 		wander_state(delta)
 		
