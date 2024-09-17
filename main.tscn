@@ -14,5 +14,11 @@ position = Vector2(166, -39)
 
 [node name="ParallaxBackground" parent="." instance=ExtResource("4_2uaan")]
 
+[node name="CharacterBody2D6" parent="." instance=ExtResource("4_g2tlg")]
+position = Vector2(828, -97)
+
+[node name="CharacterBody2D5" parent="." instance=ExtResource("4_g2tlg")]
+position = Vector2(752, -26)
+
 [node name="CharacterBody2D4" parent="." instance=ExtResource("4_g2tlg")]
-position = Vector2(409, -5)
+position = Vector2(410, -4)

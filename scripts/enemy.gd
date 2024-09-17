@@ -10,6 +10,7 @@ class_name enemy
 @onready var anim: AnimationPlayer = $AnimationPlayer2
 @onready var anim_tree: AnimationTree = $AnimationTree
 @onready var player: CharacterBody2D = $"../Player"
+@onready var ray_cast_floor: RayCast2D = $RayCastfloor
 
 var move_speed := 50
 var move_direction : float
@@ -37,9 +38,8 @@ func randomize_jump():
 	jump_time = randf_range(2, 5)
 	
 func damage(attack : Attack):
-	knockback_force = attack.knockback_force
+	knockback_force = attack.knockback_force 
 	attack_position = sign( global_position.x - attack.attack_position)
-	isHit = true
 	
 func jump(delta):
 	if is_on_floor():
@@ -55,34 +55,36 @@ func attack(move_direction, delta):
 # States
 #
 ##################################################
-func knockback_state(delta):
-	#KNOCKBACK
-	velocity.x = knockback_force * attack_position
-	if is_on_floor():
-		velocity.y = -knockback_force
-		isHit = false
-	else:
-		velocity += get_gravity() * delta
-	print(attack_position)
-	
-	if is_on_floor():
-		isHit = false
 		
 func chase_state(delta):
 	#GRAVITY
 	if not is_on_floor():
 		velocity += get_gravity() * delta
-	
+	else:
+		velocity.y = -knockback_force
 	#CHASE PLAYER
-	move_direction = sign(player.global_position.x - global_position.x)
-	velocity.x = 100 * move_direction
+	if abs(player.global_position.x - global_position.x) > 5:
+		move_direction = sign(player.global_position.x - global_position.x)
+		ray_cast_floor.position.x = move_direction * 6
+	else:
+		move_direction = 0
+	velocity.x = 100 * move_direction + (knockback_force * attack_position)
 	
+	if knockback_force>0:
+		knockback_force -= delta * 500
 	#JUMP OVER OBSTACLE
-	if is_on_wall():
+	if is_on_wall() and player.global_position.distance_to(global_position) > 12:
 		jump(delta)
+	
+	if is_on_floor() and not ray_cast_floor.is_colliding():
+		velocity.x = 0
 
 func wander_state(delta):
 	#GRAVITY
+	ray_cast_floor.position.x = sign(move_direction)*6
+	if not ray_cast_floor.is_colliding():
+		move_direction *= -1
+		
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 	
@@ -113,9 +115,7 @@ func wander_state(delta):
 ##################################################
 
 func movement_handler(delta):
-	if isHit:
-		knockback_state(delta)	
-	elif player.global_position.distance_to(global_position) < 100:
+	if player.global_position.distance_to(global_position) < 100:
 		chase_state(delta)
 	else:
 		wander_state(delta)
